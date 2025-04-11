@@ -32,4 +32,28 @@ export class TodoEffects {
       )
     )
   );
+
+  loadTasks$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TodoActions.loadTasks),
+      mergeMap(action =>
+        this.todoService.getTasks(action.listId).pipe(
+          map(tasks => TodoActions.loadTasksSuccess({ listId: action.listId, tasks })),
+          catchError(error => of(TodoActions.loadTasksFailure({ error })))
+        )
+      )
+    )
+  );
+
+  updateTask$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TodoActions.updateTask),
+      mergeMap(action =>
+        this.todoService.updateTaskCompletion(action.listId, action.taskId, action.completed).pipe(
+          map(task => TodoActions.updateTaskSuccess({ listId: action.listId, task })),
+          catchError(error => of(TodoActions.updateTaskFailure({ error })))
+        )
+      )
+    )
+  );
 }

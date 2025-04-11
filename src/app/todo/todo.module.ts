@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import {CdkAccordionModule} from '@angular/cdk/accordion';
 
@@ -32,6 +33,7 @@ const routes: Routes = [
     MatCardModule,
     MatListModule,
     MatIconModule,
+    MatCheckboxModule,
     CdkAccordionModule,
     FlexLayoutModule,
     FormsModule,

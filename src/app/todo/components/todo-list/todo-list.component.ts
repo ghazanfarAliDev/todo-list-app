@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Todo } from '../../models/todo.model';
+import { Todo, Task } from '../../models/todo.model';
 import { TodoState } from '../../store/todo.reducer';
 import * as TodoActions from '../../store/todo.actions';
 
@@ -14,6 +14,7 @@ export class TodoListComponent implements OnInit {
   loading: boolean = false;
   error: string | null = null;
   newListTitle: string = '';
+  expandedIndex: number | null = null;
 
   constructor(private store: Store<{ todos: TodoState }>) {}
 
@@ -33,7 +34,16 @@ export class TodoListComponent implements OnInit {
     }
   }
 
-  public goToList(): void {
-    console.log("Function to Go to details");
+  public toggleList(listId: string, index: number): void {
+    this.expandedIndex = this.expandedIndex === index ? null : index;
+    this.store.dispatch(TodoActions.loadTasks({ listId }));
+  }
+
+  public toggleTask(listId: string, task: Task): void {
+    this.store.dispatch(TodoActions.updateTask({
+      listId,
+      taskId: task.id,
+      completed: !task.completed
+    }));
   }
 }

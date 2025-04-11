@@ -8,26 +8,38 @@
 
   <div fxLayout="column" fxLayoutGap="16px">
     <cdk-accordion class="accordion">
-      <cdk-accordion-item *ngFor="let item of todos; let index = index" #accordionItem="cdkAccordionItem" class="accordion-item">
+      <cdk-accordion-item 
+        *ngFor="let item of todos; let index = index" 
+        [expanded]="expandedIndex === index" 
+        class="accordion-item">
         <button
           class="accordion-item-header"
-          (click)="accordionItem.toggle()"
+          (click)="toggleList(item.id, index)"
           tabindex="0"
           [attr.id]="'accordion-header-' + index"
-          [attr.aria-expanded]="accordionItem.expanded"
+          [attr.aria-expanded]="expandedIndex === index"
           [attr.aria-controls]="'accordion-body-' + index">
           {{ item.title }}
           <span class="accordion-item-description">
-            Click to {{ accordionItem.expanded ? 'close' : 'open' }}
+            Click to {{ expandedIndex === index ? 'close' : 'open' }}
           </span>
         </button>
         <div
           class="accordion-item-body"
           role="region"
-          [style.display]="accordionItem.expanded ? '' : 'none'"
+          [style.display]="expandedIndex === index ? '' : 'none'"
           [attr.id]="'accordion-body-' + index"
           [attr.aria-labelledby]="'accordion-header-' + index">
-          Tasks will be shown here.
+          <div *ngIf="item.tasks?.length; else noTasks">
+            <div *ngFor="let task of item.tasks">
+              <mat-checkbox [checked]="task.completed" (change)="toggleTask(item.id, task)">
+                {{ task.title }} - {{ task.description }}
+              </mat-checkbox>
+            </div>
+          </div>
+          <ng-template #noTasks>
+            <p>No tasks found for this list.</p>
+          </ng-template>
         </div>
       </cdk-accordion-item>
     </cdk-accordion>
