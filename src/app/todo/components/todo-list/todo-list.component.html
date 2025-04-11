@@ -12,6 +12,7 @@
         *ngFor="let item of todos; let index = index" 
         [expanded]="expandedIndex === index" 
         class="accordion-item">
+
         <button
           class="accordion-item-header"
           (click)="toggleList(item.id, index)"
@@ -24,12 +25,14 @@
             Click to {{ expandedIndex === index ? 'close' : 'open' }}
           </span>
         </button>
+
         <div
           class="accordion-item-body"
           role="region"
           [style.display]="expandedIndex === index ? '' : 'none'"
           [attr.id]="'accordion-body-' + index"
           [attr.aria-labelledby]="'accordion-header-' + index">
+
           <div *ngIf="item.tasks?.length; else noTasks">
             <div *ngFor="let task of item.tasks">
               <mat-checkbox [checked]="task.completed" (change)="toggleTask(item.id, task)">
@@ -40,6 +43,18 @@
           <ng-template #noTasks>
             <p>No tasks found for this list.</p>
           </ng-template>
+
+          <!-- Add Task Form -->
+          <div style="margin-top: 16px;">
+            <mat-form-field appearance="fill" style="width: 100%;">
+              <input matInput placeholder="Task title" [(ngModel)]="taskInputs[item.id].title">
+            </mat-form-field>
+            <mat-form-field appearance="fill" style="width: 100%;">
+              <input matInput placeholder="Task description" [(ngModel)]="taskInputs[item.id].description">
+            </mat-form-field>
+            <button mat-raised-button color="accent" (click)="addTask(item)">Add Task</button>
+          </div>
+
         </div>
       </cdk-accordion-item>
     </cdk-accordion>

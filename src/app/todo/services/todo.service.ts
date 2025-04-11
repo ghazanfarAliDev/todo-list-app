@@ -7,7 +7,7 @@ import { Todo, Task } from '../models/todo.model';
   providedIn: 'root'
 })
 export class TodoService {
-  private apiUrl = 'http://localhost:3000';
+  private apiUrl = 'http://localhost:3000'; // Update this if deploying
 
   constructor(private http: HttpClient) {}
 
@@ -25,5 +25,9 @@ export class TodoService {
 
   updateTaskCompletion(listId: string, taskId: string, completed: boolean): Observable<Task> {
     return this.http.put<Task>(`${this.apiUrl}/lists/${listId}/tasks/${taskId}`, { completed });
+  }
+
+  addTask(listId: string, task: { title: string; description: string }): Observable<Task> {
+    return this.http.post<Task>(`${this.apiUrl}/lists/${listId}/tasks`, task);
   }
 }

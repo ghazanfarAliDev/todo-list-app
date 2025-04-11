@@ -56,4 +56,16 @@ export class TodoEffects {
       )
     )
   );
+
+  addTask$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TodoActions.addTask),
+      mergeMap(action =>
+        this.todoService.addTask(action.listId, { title: action.title, description: action.description }).pipe(
+          map(task => TodoActions.addTaskSuccess({ listId: action.listId, task })),
+          catchError(error => of(TodoActions.addTaskFailure({ error })))
+        )
+      )
+    )
+  );
 }

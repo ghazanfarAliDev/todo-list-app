@@ -11,4 +11,6 @@ export interface Todo {
   taskCount?: number;
   completedTasks?: number;
   tasks?: Task[];
+  newTaskTitle?: string;
+  newTaskDescription?: string;
 }

@@ -16,3 +16,8 @@ export const loadTasksFailure = createAction('[Task] Load Tasks Failure', props<
 export const updateTask = createAction('[Task] Update Task', props<{ listId: string; taskId: string; completed: boolean }>());
 export const updateTaskSuccess = createAction('[Task] Update Task Success', props<{ listId: string; task: Task }>());
 export const updateTaskFailure = createAction('[Task] Update Task Failure', props<{ error: any }>());
+
+export const addTask = createAction('[Task] Add Task', props<{ listId: string; title: string; description: string }>());
+export const addTaskSuccess = createAction('[Task] Add Task Success', props<{ listId: string; task: Task }>());
+export const addTaskFailure = createAction('[Task] Add Task Failure', props<{ error: any }>());
+
