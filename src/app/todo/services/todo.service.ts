@@ -7,23 +7,15 @@ import { Todo } from '../models/todo.model';
   providedIn: 'root'
 })
 export class TodoService {
-  private apiUrl = 'https://jsonplaceholder.typicode.com/todos';
+  private apiUrl = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {}
 
   getTodos(): Observable<Todo[]> {
-    return this.http.get<Todo[]>(this.apiUrl);
+    return this.http.get<Todo[]>(`${this.apiUrl}/lists`);
   }
 
-  addTodo(todo: Todo): Observable<Todo> {
-    return this.http.post<Todo>(this.apiUrl, todo);
-  }
-
-  updateTodo(todo: Todo): Observable<Todo> {
-    return this.http.put<Todo>(`${this.apiUrl}/${todo.id}`, todo);
-  }
-
-  deleteTodo(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  addTodo(title: string): Observable<{ id: string; title: string }> {
+    return this.http.post<{ id: string; title: string }>(`${this.apiUrl}/lists`, { title });
   }
 }

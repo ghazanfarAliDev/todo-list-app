@@ -1,38 +1,35 @@
 <mat-toolbar color="primary">To-Do Lists</mat-toolbar>
 <div fxLayout="column" fxLayoutGap="16px" style="padding: 16px">
-    <mat-form-field appearance="fill" fxFlex>
-        <mat-label>New list title</mat-label>
-        <input matInput [(ngModel)]="newListTitle" />
-    </mat-form-field>
-    <button mat-raised-button color="primary" (click)="addList()">Add List</button>
+  <mat-form-field appearance="fill" fxFlex>
+    <mat-label>New list title</mat-label>
+    <input matInput [(ngModel)]="newListTitle" />
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="addList()">Add List</button>
 
-    <div fxLayout="column" fxLayoutGap="16px">
-        <cdk-accordion class="accordion">
-            <cdk-accordion-item *ngFor="let item of todos; let index = index" #accordionItem="cdkAccordionItem" class="accordion-item">
-              <button
-                class="accordion-item-header"
-                (click)="accordionItem.toggle()"
-                tabindex="0"
-                [attr.id]="'accordion-header-' + index"
-                [attr.aria-expanded]="accordionItem.expanded"
-                [attr.aria-controls]="'accordion-body-' + index">
-                {{ item.title }}
-                <span class="accordion-item-description">
-                  Click to {{ accordionItem.expanded ? 'close' : 'open' }}
-                </span>
-              </button>
-              <div
-                class="accordion-item-body"
-                role="region"
-                [style.display]="accordionItem.expanded ? '' : 'none'"
-                [attr.id]="'accordion-body-' + index"
-                [attr.aria-labelledby]="'accordion-header-' + index"
-              >
-                Lorem ipsum dolor, sit amet, consectetur adipisicing elit. Perferendis excepturi incidunt ipsum
-                deleniti labore, tempore non nam doloribus blanditiis veritatis illo autem iure aliquid ullam
-                rem tenetur deserunt velit culpa?
-              </div>
-            </cdk-accordion-item>
-        </cdk-accordion>
-    </div>
+  <div fxLayout="column" fxLayoutGap="16px">
+    <cdk-accordion class="accordion">
+      <cdk-accordion-item *ngFor="let item of todos; let index = index" #accordionItem="cdkAccordionItem" class="accordion-item">
+        <button
+          class="accordion-item-header"
+          (click)="accordionItem.toggle()"
+          tabindex="0"
+          [attr.id]="'accordion-header-' + index"
+          [attr.aria-expanded]="accordionItem.expanded"
+          [attr.aria-controls]="'accordion-body-' + index">
+          {{ item.title }}
+          <span class="accordion-item-description">
+            Click to {{ accordionItem.expanded ? 'close' : 'open' }}
+          </span>
+        </button>
+        <div
+          class="accordion-item-body"
+          role="region"
+          [style.display]="accordionItem.expanded ? '' : 'none'"
+          [attr.id]="'accordion-body-' + index"
+          [attr.aria-labelledby]="'accordion-header-' + index">
+          Tasks will be shown here.
+        </div>
+      </cdk-accordion-item>
+    </cdk-accordion>
+  </div>
 </div>

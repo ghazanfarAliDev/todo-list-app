@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Todo } from '../../models/todo.model';
 import { Store } from '@ngrx/store';
+import { Todo } from '../../models/todo.model';
 import { TodoState } from '../../store/todo.reducer';
 import * as TodoActions from '../../store/todo.actions';
 
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
-  styleUrl: './todo-list.component.scss'
+  styleUrls: ['./todo-list.component.scss']
 })
 export class TodoListComponent implements OnInit {
   todos: Todo[] = [];
@@ -15,15 +15,9 @@ export class TodoListComponent implements OnInit {
   error: string | null = null;
   newListTitle: string = '';
 
-
-  constructor(private store: Store<{ todos: TodoState }>) { }
+  constructor(private store: Store<{ todos: TodoState }>) {}
 
   ngOnInit(): void {
-    this.getTodo();
-  }
-
-
-  private getTodo(): void {
     this.store.dispatch(TodoActions.loadTodos());
     this.store.select('todos').subscribe((state: TodoState) => {
       this.todos = state.todos;
@@ -33,10 +27,13 @@ export class TodoListComponent implements OnInit {
   }
 
   public addList(): void {
-    console.log('Function to Add list');
+    if (this.newListTitle.trim()) {
+      this.store.dispatch(TodoActions.addTodo({ title: this.newListTitle }));
+      this.newListTitle = '';
+    }
   }
+
   public goToList(): void {
     console.log("Function to Go to details");
   }
-
 }

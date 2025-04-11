@@ -1,7 +1,6 @@
 export interface Todo {
-    id: number;
-    title: string;
-    description: string;
-    completed: boolean;
-    expanded?: boolean;
-  }
+  id: string;
+  title: string;
+  taskCount?: number;
+  completedTasks?: number;
+}

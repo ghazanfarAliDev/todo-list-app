@@ -27,18 +27,8 @@ export const todoReducer = createReducer(
     loading: false,
     error
   })),
-  on(TodoActions.addTodo, (state, { todo }) => ({
+  on(TodoActions.addTodoSuccess, (state, { todo }) => ({
     ...state,
     todos: [...state.todos, todo]
-  })),
-  on(TodoActions.updateTodo, (state, { todo }) => ({
-    ...state,
-    todos: state.todos.map(t =>
-      t.id === todo.id ? { ...t, ...todo } : t
-    )
-  })),
-  on(TodoActions.deleteTodo, (state, { id }) => ({
-    ...state,
-    todos: state.todos.filter(todo => todo.id !== id)
   }))
 );
