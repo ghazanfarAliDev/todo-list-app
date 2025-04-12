@@ -8,6 +8,11 @@ export interface TodoState {
   error: string | null;
 }
 
+const getStoredTodos = (): Todo[] => {
+  const stored = localStorage.getItem('todos');
+  return stored ? JSON.parse(stored) : [];
+};
+
 export const initialState: TodoState = {
   todos: [],
   loading: false,
@@ -16,31 +21,60 @@ export const initialState: TodoState = {
 
 export const todoReducer = createReducer(
   initialState,
-  on(TodoActions.loadTodos, (state) => ({ ...state, loading: true })),
-  on(TodoActions.loadTodosSuccess, (state, { todos }) => ({
-    ...state,
-    loading: false,
-    todos
-  })),
-  on(TodoActions.loadTodosFailure, (state, { error }) => ({
-    ...state,
-    loading: false,
-    error
-  })),
-  on(TodoActions.addTodoSuccess, (state, { todo }) => ({
-    ...state,
-    todos: [...state.todos, todo]
-  })),
-  on(TodoActions.loadTasksSuccess, (state, { listId, tasks }) => ({
-    ...state,
-    todos: state.todos.map(todo =>
+
+  on(TodoActions.loadTodos, state => ({ ...state, loading: true })),
+
+  on(TodoActions.loadTodosSuccess, (state, { todos }) => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+    return {
+      ...state,
+      loading: false,
+      todos,
+      error: null
+    };
+  }),
+
+  on(TodoActions.loadTodosFailure, (state, { error }) => {
+    const fallback = getStoredTodos();
+    return {
+      ...state,
+      loading: false,
+      error,
+      todos: fallback
+    };
+  }),
+
+  on(TodoActions.addTodoSuccess, (state, { todo }) => {
+    const updated = [...state.todos, todo];
+    localStorage.setItem('todos', JSON.stringify(updated));
+    return { ...state, todos: updated };
+  }),
+
+  on(TodoActions.loadTasksSuccess, (state, { listId, tasks }) => {
+    const updated = state.todos.map(todo =>
       todo.id === listId ? { ...todo, tasks } : todo
-    )
-  })),
-  on(TodoActions.addTaskSuccess, (state, { listId, task }) => ({
-    ...state,
-    todos: state.todos.map(todo =>
+    );
+    localStorage.setItem('todos', JSON.stringify(updated));
+    return { ...state, todos: updated };
+  }),
+
+  on(TodoActions.addTaskSuccess, (state, { listId, task }) => {
+    const updated = state.todos.map(todo =>
       todo.id === listId ? { ...todo, tasks: [...(todo.tasks || []), task] } : todo
-    )
-  }))
+    );
+    localStorage.setItem('todos', JSON.stringify(updated));
+    return { ...state, todos: updated };
+  }),
+
+  on(TodoActions.updateTaskSuccess, (state, { listId, task }) => {
+    const updated = state.todos.map(todo => {
+      if (todo.id === listId) {
+        const tasks = (todo.tasks ?? []).map(t => (t.id === task.id ? task : t));
+        return { ...todo, tasks };
+      }
+      return todo;
+    });
+    localStorage.setItem('todos', JSON.stringify(updated));
+    return { ...state, todos: updated };
+  })
 );
