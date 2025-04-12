@@ -20,20 +20,28 @@ export class TodoListComponent implements OnInit {
   constructor(private store: Store<{ todos: TodoState }>) {}
 
   ngOnInit(): void {
+    const loadedTaskLists = new Set<string>();
+  
     this.store.dispatch(TodoActions.loadTodos());
+  
     this.store.select('todos').subscribe((state: TodoState) => {
       this.todos = state.todos;
       this.loading = state.loading;
       this.error = state.error;
-
-      // ✅ Initialize taskInputs for all todos to avoid undefined
+  
       this.todos.forEach(todo => {
         if (!this.taskInputs[todo.id]) {
           this.taskInputs[todo.id] = { title: '', description: '' };
         }
+  
+        if (!loadedTaskLists.has(todo.id)) {
+          this.store.dispatch(TodoActions.loadTasks({ listId: todo.id }));
+          loadedTaskLists.add(todo.id);
+        }
       });
     });
   }
+  
 
   public addList(): void {
     if (this.newListTitle.trim()) {
@@ -68,5 +76,12 @@ export class TodoListComponent implements OnInit {
       }));
       this.taskInputs[list.id] = { title: '', description: '' };
     }
+  }
+  public getTaskCount(todo: Todo): number {
+    return todo.tasks?.length || 0;
+  }
+  
+  public getCompletedTaskCount(todo: Todo): number {
+    return todo.tasks?.filter(task => task.completed).length || 0;
   }
 }
