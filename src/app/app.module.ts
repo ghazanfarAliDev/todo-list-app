@@ -11,11 +11,8 @@ import { todoReducer } from './todo/store/todo.reducer';
 import { TodoEffects } from './todo/store/todo.effects';
 import { HttpClientModule } from '@angular/common/http';
 
-
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -24,9 +21,7 @@ import { HttpClientModule } from '@angular/common/http';
     StoreModule.forRoot({ todos: todoReducer }),
     EffectsModule.forRoot([TodoEffects]),
   ],
-  providers: [
-    provideAnimationsAsync()
-  ],
-  bootstrap: [AppComponent]
+  providers: [provideAnimationsAsync()],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

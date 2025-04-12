@@ -8,23 +8,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
-import {CdkAccordionModule} from '@angular/cdk/accordion';
+import { CdkAccordionModule } from '@angular/cdk/accordion';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-
-
-
-const routes: Routes = [
-  { path: '', component: TodoListComponent }
-];
+const routes: Routes = [{ path: '', component: TodoListComponent }];
 
 @NgModule({
-  declarations: [
-    TodoListComponent
-  ],
+  declarations: [TodoListComponent],
   imports: [
     CommonModule,
     MatToolbarModule,
@@ -37,7 +30,7 @@ const routes: Routes = [
     CdkAccordionModule,
     FlexLayoutModule,
     FormsModule,
-    RouterModule.forChild(routes)
-  ]
+    RouterModule.forChild(routes),
+  ],
 })
-export class TodoModule { }
+export class TodoModule {}
