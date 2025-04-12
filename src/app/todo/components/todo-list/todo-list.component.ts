@@ -19,19 +19,20 @@ export class TodoListComponent implements OnInit {
 
   constructor(private store: Store<{ todos: TodoState }>) {}
 
+  /**
+   * Lifecycle hook - initializes the to-do list state from the store.
+   * Dispatches loadTodos and auto-loads tasks for each list once.
+   */
   ngOnInit(): void {
     const loadedTaskLists = new Set<string>(); // Track which lists we've already loaded tasks for
 
-    // Dispatch initial action to load to-do lists from backend
     this.store.dispatch(TodoActions.loadTodos());
 
-    // Subscribe to store state for todos
     this.store.select('todos').subscribe((state: TodoState) => {
       this.todos = state.todos;
       this.loading = state.loading;
       this.error = state.error;
 
-      // For each list, ensure task input object exists and tasks are loaded once
       this.todos.forEach((todo) => {
         if (!this.taskInputs[todo.id]) {
           this.taskInputs[todo.id] = { title: '', description: '' };
@@ -45,7 +46,10 @@ export class TodoListComponent implements OnInit {
     });
   }
 
-  // Add a new to-do list
+  /**
+   * Adds a new to-do list based on user input.
+   * Dispatches addTodo action.
+   */
   public addList(): void {
     if (this.newListTitle.trim()) {
       this.store.dispatch(TodoActions.addTodo({ title: this.newListTitle }));
@@ -53,7 +57,11 @@ export class TodoListComponent implements OnInit {
     }
   }
 
-  // Expand/collapse a to-do list and load its tasks
+  /**
+   * Toggles accordion expansion for a list and triggers task load.
+   * @param listId - ID of the selected to-do list
+   * @param index - Accordion index to track expansion
+   */
   public toggleList(listId: string, index: number): void {
     this.expandedIndex = this.expandedIndex === index ? null : index;
     if (!this.taskInputs[listId]) {
@@ -62,7 +70,12 @@ export class TodoListComponent implements OnInit {
     this.store.dispatch(TodoActions.loadTasks({ listId }));
   }
 
-  // Toggle completion state of a task
+  /**
+   * Toggles the completion state of a task.
+   * Dispatches updateTask action if task has an ID.
+   * @param listId - ID of the list containing the task
+   * @param task - Task object to be updated
+   */
   public toggleTask(listId: string, task: Task): void {
     if (!task.id) {
       console.warn('Task missing ID. Cannot update.');
@@ -77,7 +90,11 @@ export class TodoListComponent implements OnInit {
     );
   }
 
-  // Add a task to a specific list
+  /**
+   * Adds a new task to the specified list using input values.
+   * Dispatches addTask and resets local inputs.
+   * @param list - Todo list to which the task is added
+   */
   public addTask(list: Todo): void {
     const input = this.taskInputs[list.id];
     if (input?.title && input?.description) {
@@ -90,15 +107,5 @@ export class TodoListComponent implements OnInit {
       );
       this.taskInputs[list.id] = { title: '', description: '' };
     }
-  }
-
-  // Get total number of tasks for a list
-  public getTaskCount(todo: Todo): number {
-    return todo.tasks?.length || 0;
-  }
-
-  // Get number of completed tasks for a list
-  public getCompletedTaskCount(todo: Todo): number {
-    return todo.tasks?.filter((task) => task.completed).length || 0;
   }
 }

@@ -13,11 +13,12 @@ import { FormsModule } from '@angular/forms';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { TodoPanelComponent } from './components/todo-panel/todo-panel.component';
 
 const routes: Routes = [{ path: '', component: TodoListComponent }];
 
 @NgModule({
-  declarations: [TodoListComponent],
+  declarations: [TodoListComponent, TodoPanelComponent],
   imports: [
     CommonModule,
     MatToolbarModule,
