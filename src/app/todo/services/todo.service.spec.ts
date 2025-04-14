@@ -28,7 +28,7 @@ describe('TodoService', () => {
       expect(lists).toEqual(mockLists);
     });
 
-    const req = httpMock.expectOne('http://localhost:3000/lists');
+    const req = httpMock.expectOne('https://todo-app-backend-9eli.onrender.com/lists');
     expect(req.request.method).toBe('GET');
     req.flush(mockLists);
   });
@@ -40,7 +40,7 @@ describe('TodoService', () => {
       expect(response).toEqual({ id: '123', title });
     });
 
-    const req = httpMock.expectOne('http://localhost:3000/lists');
+    const req = httpMock.expectOne('https://todo-app-backend-9eli.onrender.com/lists');
     expect(req.request.method).toBe('POST');
     req.flush({ id: '123', title });
   });
